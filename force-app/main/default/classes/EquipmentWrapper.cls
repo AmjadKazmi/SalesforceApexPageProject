@@ -1,5 +1,5 @@
 public class EquipmentWrapper {
-    public String id { get; set; }
+    public String  ExternalID { get; set; }
     public Boolean replacement { get; set; }
     public Integer quantity { get; set; }
     public String name { get; set; }
