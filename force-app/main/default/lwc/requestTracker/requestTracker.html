@@ -1,0 +1,15 @@
+<template>
+    <div class="jira-board">
+        <template for:each={columns} for:item="col">
+            <div key={col.status} class="jira-column" ondrop={handleDrop} ondragover={allowDrop} data-status={col.status}>
+                <h2 class="column-title">{col.label}</h2>
+                <template for:each={col.cases} for:item="cs">
+                    <div key={cs.Id} class="jira-card" draggable="true" ondragstart={handleDrag} data-id={cs.Id}>
+                        <p class="card-title">Case #{cs.CaseNumber}</p>
+                        <p class="card-desc">{cs.Subject}</p>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

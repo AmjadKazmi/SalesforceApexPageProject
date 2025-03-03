@@ -1,0 +1,36 @@
+.jira-board {
+    display: flex;
+    justify-content: space-between;
+    background: #f4f6f9;
+    padding: 20px;
+}
+
+.jira-column {
+    width: 30%;
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0px 2px 5px gray;
+    min-height: 300px;
+}
+
+.column-title {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.jira-card {
+    background: #0070d2;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    cursor: grab;
+}
+
+.my-custom-blue-theme {
+  background-color: var(--slds-c-button-brand-color-background, #0070d2);
+  color: var(--slds-c-button-brand-color-text, #ffffff);
+}

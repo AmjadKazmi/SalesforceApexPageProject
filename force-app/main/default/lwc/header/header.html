@@ -1,0 +1,18 @@
+<template>
+    <lightning-card title="Maintenance Requests" class="slds-var-m-around_large">
+     <div class="slds-grid slds-var-p-around_medium">
+            <!-- Left-aligned small table -->
+            <div class="slds-size_1-of-3 slds-var-m-left_small">
+                <lightning-datatable 
+                    key-field="type"
+                    data={tableData}
+                    columns={columns}
+                    hide-checkbox-column="true"
+                    hidedefaultactions="true"
+                    class="small-table">
+                </lightning-datatable>
+            </div>
+        </div>
+    </lightning-card>
+    <c-request-tracker oncaseupdated={handleCaseUpdate}></c-request-tracker>
+</template>
