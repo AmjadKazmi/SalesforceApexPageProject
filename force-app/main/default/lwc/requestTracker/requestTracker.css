@@ -22,15 +22,43 @@
 }
 
 .jira-card {
-    background: #0070d2;
-    color: white;
+    color: rgb(42, 40, 40);
     padding: 10px;
     border-radius: 5px;
     margin: 10px 0;
     cursor: grab;
 }
 
+
+.card-new {
+    background: #9bc8ef; 
+}
+
+.card-working {
+    background: #eee6c8; 
+}
+
+.card-escalated {
+    background: #eecdcb;
+}
+
+.card-closed {
+    background: #ceeedb;
+}
+
+
 .my-custom-blue-theme {
   background-color: var(--slds-c-button-brand-color-background, #0070d2);
   color: var(--slds-c-button-brand-color-text, #ffffff);
+}
+
+.case-title-container {
+    display: flex;
+    align-items: center;
+}
+
+.info-icon {
+    margin-left: 5px; /* Adds spacing between case number and icon */
+    cursor: pointer;
+    color: #ffffff;
 }

@@ -4,8 +4,9 @@ import getCaseCount from '@salesforce/apex/TicketController.getCaseCount';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class CaseCountTable extends LightningElement {
-   wiredCaseData //to store the data for refreshApex
+    wiredCaseData //to store the data for refreshApex
     tableData = [];
+    isModalVisible = false; // Modal visibility state
     
     // Define columns for data table
     columns = [
@@ -47,7 +48,7 @@ export default class CaseCountTable extends LightningElement {
             this.tableData = Object.keys(data).map(status => ({
                 type: status,
                 count: data[status], // Accessing value from the map
-                colorClass: this.colorMapping[status] || 'slds-text-color_default'
+                colorClass: this.colorMapping[status] || 'slds-text-color_default' // Dynamic color styling
             }));
         } else if (error) {
             this.dispatchEvent(
@@ -74,5 +75,15 @@ export default class CaseCountTable extends LightningElement {
             console.log('Data updated, refreshing component...');
             refreshApex(this.wiredCaseData);  // Refresh data from Apex
         }
+     }
+    
+    handleCreateNewRequest() {
+        console.log('Create New Request button clicked');
+        this.isModalVisible = true;
+        console.log('Modal Visible set in header:', this.isModalVisible);
+    }
+    handleCloseModal() {
+        this.isModalVisible = false;
+        console.log('Modal Visible set in header:', this.isModalVisible);
     }
 }

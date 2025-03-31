@@ -1,0 +1,30 @@
+<template>
+    <div class="product-details-hover-container">
+        <div class="hover-trigger"  onmouseenter={handleMouseEnter}
+        onmouseleave={handleMouseLeave}>
+            <slot></slot>
+        </div>
+        <div class="tooltip">
+            <template if:true={ishovered}>
+                <div>
+                <template if:true={formattedProductDetails.length}>
+                    <p>Product Details</p>
+                    <ul>
+                        <template for:each={formattedProductDetails} for:item="detail">
+                            <li key={detail.product}>
+                                {detail.displayText}
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template if:false={formattedProductDetails.length}>
+                    <p>No product details found.</p>
+                </template>
+                </div>
+            </template>
+
+        </div>
+    </div>
+     <!-- <lightning-helptext data-id={caseId} onmouseenter={handleMouseEnter}
+        onmouseleave={handleMouseLeave} content= {productContent}></lightning-helptext> -->
+</template>

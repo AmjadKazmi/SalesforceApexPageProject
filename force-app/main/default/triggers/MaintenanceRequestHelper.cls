@@ -78,7 +78,11 @@ public with sharing class MaintenanceRequestHelper {
 
             Case newReq = new Case();
             newReq.Type = 'Routine Maintenance';
-            newReq.Subject = 'Routine Checkup - ' + req.Subject;
+            if (req.Subject != null) {
+                newReq.Subject = 'Routine Checkup - ' + req.Subject;
+            }else{
+                newReq.Subject = 'Routine Checkup';
+            }
             newReq.Date_Reported__c  = Date.today();
             newReq.Vehicle__c = req.Vehicle__c;
             newReq.Date_Due__c = dueDate;
