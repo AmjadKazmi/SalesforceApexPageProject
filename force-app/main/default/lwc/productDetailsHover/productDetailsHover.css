@@ -1,0 +1,44 @@
+.product-details-hover-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip box */
+.tooltip {
+    position: absolute;
+    top: -10px; /* above the icon */
+    left: -10%; /* to the right of the icon */
+    transform: translateY(-100%);
+    z-index: 1000;
+     background-color: rgba(60, 61, 65, 0.85); /* semi-transparent background */
+    color: white;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    min-width: 200px;
+    white-space: normal;
+    font-size: 0.85rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    backdrop-filter: blur(2px); /* optional: adds a glassy effect */
+}
+
+/* Show tooltip on hover */
+.product-details-hover-container:hover .tooltip,
+.product-details-hover-container:focus-within .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Triangle aligned to 'i' icon */
+.tooltip::before {
+    content: "";
+    position: absolute;
+    top: 100%; /* stick it at the bottom of tooltip */
+    left: 10px; /* adjust this to match where your <i> icon is */
+    border-width: 6px;
+    border-style: solid;
+    border-color:rgba(60, 61, 65, 0.85) transparent transparent transparent;
+}

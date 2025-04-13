@@ -1,20 +1,49 @@
 <template>
     <template if:true={modalVisible}>
-        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
-            <div class="slds-modal__container">
-                <header class="slds-modal__header">
-                    <h2 class="slds-text-heading_medium">New Maintenace Request</h2>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_large ">
+            <div class="slds-modal__container" style="overflow: hidden; padding: 0;">
+                <header class="slds-modal__header" style="border-top-left-radius: 6px; border-top-right-radius: 6px;">
+                    <h2 class="slds-text-heading_medium">New Maintenance Request</h2>
                     <lightning-button-icon icon-name="utility:close" alternative-text="Close"
                         class="slds-modal__close" onclick={closeModal}></lightning-button-icon>
                 </header>
-                
+
                 <div class="slds-modal__content slds-var-p-around_medium">
-                    <lightning-combobox label="Select an Option" options={options}></lightning-combobox>
-                    <lightning-input type="text" label="Enter Text"></lightning-input>
-                </div>
-                <footer class="slds-modal__footer">
-                    <lightning-button label="Close" onclick={closeModal}></lightning-button>
-                </footer>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-size_1-of-3 slds-var-p-around_x-small">
+                            <lightning-input type="text" label="Subject"></lightning-input>
+                        </div>
+
+                        <!-- Lookups with search support -->
+                        <div class="slds-size_1-of-3 slds-var-p-around_x-small">
+                            <c-searchable-combox label="Contact" onselected={handleSelectedValue}></c-searchable-combox>
+                        </div>
+                        <div class="slds-size_1-of-3 slds-var-p-around_x-small">
+                             <c-searchable-combox label="Account" onselected={handleSelectedValue}></c-searchable-combox>
+                        </div>
+                        <div class="slds-size_1-of-3 slds-var-p-around_x-small">
+                             <c-searchable-combox label="Vehicle" onselected={handleSelectedValue}></c-searchable-combox>
+                        </div>
+
+                        <!-- Picklists -->
+                        <div class="slds-size_1-of-3 slds-var-p-around_x-small">
+                            <lightning-combobox label="Case Origin" options={originOptions} value={selectedValue} onchange={handleSelectedValueComboBox} data-label="CaseOrigin"></lightning-combobox>
+                        </div>
+                        <div class="slds-size_1-of-3 slds-var-p-around_x-small">
+                            <lightning-combobox label="Status" options={statusOptions} value={selectedValue} onchange={handleSelectedValueComboBox} data-label="Status"></lightning-combobox>
+                        </div>
+                        <div class="slds-size_1-of-3 slds-var-p-around_x-small">
+                            <lightning-combobox label="Reason" options={reasonOptions} value={selectedValue} onchange={handleSelectedValueComboBox} data-label="Reason"></lightning-combobox>
+                        </div>
+                        <div class="slds-size_1-of-3 slds-var-p-around_x-small">
+                            <lightning-combobox label="Priority" options={priorityOptions} value={selectedValue} onchange={handleSelectedValueComboBox} data-label="Priority"></lightning-combobox>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer slds-grid slds-grid_align-center" style="background-color: transparent; border: none; box-shadow: none; display: flex; justify-content: center;">
+                        <lightning-button variant="neutral" label="Cancel" onclick={closeModal} class="slds-var-m-right_small"></lightning-button>
+                        <lightning-button variant="brand" label="Save" onclick={handleSave}></lightning-button>
+                    </footer>
+                </div>        
             </div>
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>

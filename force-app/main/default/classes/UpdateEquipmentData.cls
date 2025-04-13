@@ -43,6 +43,7 @@ public class UpdateEquipmentData{
             Product2 product = new Product2();
             product.Warehouse_SKU__c = equipment.ExternalID;
             product.Replacement_Part__c= true;
+            product.IsActive= true;
             product.Cost__c = equipment.cost;
             product.Current_Inventory__c= equipment.quantity;
             product.Name= equipment.name;

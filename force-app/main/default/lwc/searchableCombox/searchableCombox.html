@@ -1,0 +1,36 @@
+<template>
+    <div class="slds-combobox_container">
+        <div class={computedComboboxClass} role="combobox" lwc:ref="searchWrapper">
+            <lightning-input type="search"
+                             label={label}
+                             value={searchKey}
+                             onchange={handleInputChange}
+                             onfocus={handleFocus}
+                             onblur={handleBlur}
+                             onclick={handleClick}
+                             placeholder="Search...">
+            </lightning-input>
+        </div>
+
+    <template if:true={showDropdown}>
+        <div class="custom-dropdown-container-below">
+            <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid custom-listbox" role="listbox">
+                <template if:true={options.length}>
+                    <template for:each={options} for:item="option">
+                        <li key={option.value} role="presentation" class="slds-listbox__item">
+                            <div class="slds-listbox__option" role="option" onclick={handleSelect} data-value={option.value} style="margin-left: 10px; font-weight: bold;">
+                                {option.label}
+                            </div>
+                        </li>
+                    </template>
+                </template>
+                <template if:false={options.length}>
+                    <li class="slds-listbox__item" role="presentation">
+                        <div class="slds-listbox__option slds-text-color_weak" role="option">No results found</div>
+                    </li>
+                </template>
+            </ul>
+            </div>
+    </template>
+    </div>
+</template>
