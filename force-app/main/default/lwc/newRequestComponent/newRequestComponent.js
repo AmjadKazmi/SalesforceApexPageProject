@@ -40,18 +40,17 @@ export default class NewRequestComponent extends LightningElement {
 
     
     @wire(GETPRODUCTS)
-        wireProducts({error, data}) {
-            if(data) {
-                this.ProductOptions= data.map(item => {
-                    return {
-                        Name: item.Name,
-                        ID: item.Id
-                    };
-                })
-        }else if(error) {
-            console.error('Error loading products:', error);
-            }
-        console.log('Product Options:', JSON.stringify(this.ProductOptions));
+    wireProducts({ error, data }) {
+        if (data) {
+            console.log('Products New Request Component:', JSON.stringify(data));
+            this.ProductOptions = data.map(item => ({
+                Name: item.Name,
+                ID: item.Id
+            }));
+        } else if (error) {
+            console.error('Error loading products:', JSON.stringify(error));
+        }
+        console.log('Product Options in New Request Component:', JSON.stringify(this.ProductOptions));
     }
     
     /**
