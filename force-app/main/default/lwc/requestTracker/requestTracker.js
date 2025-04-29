@@ -4,6 +4,9 @@ import { updateRecord } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
 import getCases from '@salesforce/apex/TicketController.getCases';
 import productDetails from '@salesforce/apex/TicketController.productDetailsForCaseID';
+import { MessageContext, subscribe } from 'lightning/messageService';
+import CASE_CREATED_CHANNEL from '@salesforce/messageChannel/CaseCreatedChannel__c';
+
 
 export default class RequestTracker extends NavigationMixin(LightningElement) {
     @track columns = [
@@ -17,7 +20,23 @@ export default class RequestTracker extends NavigationMixin(LightningElement) {
     caseDataForChild = [];
     mouseHoverTrue = false;
     productDetailsData;
-   
+    
+    @wire(MessageContext) messageContext;
+    
+    connectedCallback() {
+        this.subscribeToMessageChannel();
+    }
+    subscribeToMessageChannel() {
+        subscribe(this.messageContext, CASE_CREATED_CHANNEL, (message) => {
+            this.handleMessage(message);
+        });
+    }
+    handleMessage(message) {
+        console.log('Message received in tracker:', JSON.stringify(message));
+        if (message) {
+            refreshApex(this.wiredCasesResult);
+        }
+    }
 
     @wire(getCases)
     wiredCases(result) {

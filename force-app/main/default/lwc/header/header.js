@@ -85,5 +85,6 @@ export default class CaseCountTable extends LightningElement {
     handleCloseModal() {
         this.isModalVisible = false;
         console.log('Modal Visible set in header:', this.isModalVisible);
+         document.body.style.overflow = '';
     }
 }

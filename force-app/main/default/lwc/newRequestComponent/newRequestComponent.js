@@ -5,7 +5,13 @@ import STATUS_FIELD from '@salesforce/schema/Case.Status';
 import ORIGIN_FIELD from '@salesforce/schema/Case.Origin';
 import REASON_FIELD from '@salesforce/schema/Case.Reason';
 import PRIORITY_FIELD from '@salesforce/schema/Case.Priority';
+import TYPE_FIELD from '@salesforce/schema/Case.Type';
 import GETPRODUCTS from '@salesforce/apex/NewRequestService.getProducts';
+import INSERTRECORD from '@salesforce/apex/InsertRecords.InsertCaseRecord';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { MessageContext, publish } from 'lightning/messageService';  
+import CASE_CREATED_CHANNEL from '@salesforce/messageChannel/CaseCreatedChannel__c';
+
 
 
 /**
@@ -21,9 +27,18 @@ export default class NewRequestComponent extends LightningElement {
     statusOptions = [];
     reasonOptions = [];
     priorityOptions = [];
+    typeOptions = [];
     ProductOptions = [];
     selectedValue;
-    selectedValues = {};
+    selectedValues = {
+        CaseOrigin: '',
+        Status: '',
+        Reason: '',
+        Priority: '',
+        Type: ''
+    };
+
+    @wire(MessageContext) messageContext;
 
     @api
     get modalVisible() {
@@ -36,6 +51,7 @@ export default class NewRequestComponent extends LightningElement {
     closeModal() {
         document.body.style.overflow = '';
         this.dispatchEvent(new CustomEvent('closemodal'));
+        removedSelectedValue();
     }
 
     
@@ -44,8 +60,8 @@ export default class NewRequestComponent extends LightningElement {
         if (data) {
             console.log('Products New Request Component:', JSON.stringify(data));
             this.ProductOptions = data.map(item => ({
-                Name: item.Name,
-                ID: item.Id
+                label: item.Name,
+                value: item.Id
             }));
         } else if (error) {
             console.error('Error loading products:', JSON.stringify(error));
@@ -66,7 +82,7 @@ export default class NewRequestComponent extends LightningElement {
     
 
     /**
-     * @description This method fetches the picklist values for the Reason field on the Case object.
+     * @description This method fetches the picklist values for the Case object.
      * @param {object} param0 - The object containing the data and error properties.
      * @param {object} param0.data - The data returned from the server.
      * @date 2025-04-10
@@ -112,6 +128,15 @@ export default class NewRequestComponent extends LightningElement {
             console.error('Error loading priority picklist:', error);
         }
     }
+
+    @wire(getPicklistValues, { recordTypeId: '$caseMetadata.data.defaultRecordTypeId', fieldApiName: TYPE_FIELD })
+    wiredType({ data, error }) {
+        if (data) {
+            this.typeOptions = data.values.map(val => ({ label: val.label, value: val.value }));
+        } else if (error) {
+            console.error('Error loading Case Type picklist:', error);
+        }
+    }
 /****************************************************************************************************/
 
     /**
@@ -128,6 +153,95 @@ export default class NewRequestComponent extends LightningElement {
 
     handleSave() {
         console.log('Selected values after Save:', JSON.stringify(this.selectedValues));
+        console.log('Fields:', JSON.stringify(this.fields));
+        const selectedValues = {
+            ...this.selectedValues,
+            fields: this.fields
+        };
         this.dispatchEvent(new CustomEvent('closemodal'));
+        console.log('Selected values after Save:', JSON.stringify(selectedValues));
+        INSERTRECORD({ caseDataJson: JSON.stringify(selectedValues) })
+            .then(result => {
+                if (result && result.CaseNumber) {
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Success',
+                            message: `Case created successfully with Case Number: ${result.CaseNumber}`,
+                            variant: 'success'
+                        })
+                    );
+                    console.log('Case created successfully:', JSON.stringify(result));
+                    // Reset form values after successful save
+                    removedSelectedValue();
+                    // Publish message to notify other components
+                    console.log('Result:', JSON.stringify(result));
+                    console.log(this.messageContext);
+                    console.log('Message context:', JSON.stringify(this.messageContext));
+                    const payload = {       
+                        caseId: result.Id
+                    };
+                    console.log('Payload:', JSON.stringify(payload));
+                    publish(this.messageContext, CASE_CREATED_CHANNEL, payload);
+                    console.log('Message published:', JSON.stringify(payload));
+                } else {
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Error',
+                            message: 'Case creation failed. No Case Number returned.',
+                            variant: 'error'
+                        })
+                    );
+                    removedSelectedValue();
+                }
+            })
+            .catch(error => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error',
+                        message: `Error inserting record: ${error.body.message}`,
+                        variant: 'error'
+                    })
+                );
+                removedSelectedValue();
+                console.error('Error inserting record:', error);
+            });
+    }
+
+    
+    removedSelectedValue() {
+        this.selectedValues = {
+            CaseOrigin: '',
+            Status: '',
+            Reason: '',
+            Priority: '',
+            Type: ''
+            };
+        this.fields = [];
+    }
+        
+
+
+    /** Logic to add multiple part along with Meantaince request */
+    /************************************************************************** */
+    fields = [];
+
+    addField() {
+        this.fields = [...this.fields, { id: Date.now(), productDescription: '', productID: '' }];
+    }
+
+    handleTextChange(event) {
+        const index = event.target.dataset.index;
+        this.fields[index].text = event.target.value;
+    }
+
+    handleDropdownChange(event) {
+        const index = event.target.dataset.index;
+        this.fields[index].selected = event.target.value;
+    }
+
+    removeField(event) {
+        const index = event.target.dataset.index;
+        this.fields.splice(index, 1);
+        this.fields = [...this.fields]; // trigger reactivity
     }
 }

@@ -11,7 +11,7 @@
                 <div class="slds-modal__content slds-var-p-around_medium">
                     <div class="slds-grid slds-wrap">
                         <div class="slds-size_1-of-3 slds-var-p-around_x-small">
-                            <lightning-input type="text" label="Subject"></lightning-input>
+                            <lightning-input type="text" label="Subject" onchange={handleSelectedValueComboBox} data-label="Subject"></lightning-input>
                         </div>
 
                         <!-- Lookups with search support -->
@@ -27,18 +27,57 @@
 
                         <!-- Picklists -->
                         <div class="slds-size_1-of-3 slds-var-p-around_x-small">
-                            <lightning-combobox label="Case Origin" options={originOptions} value={selectedValue} onchange={handleSelectedValueComboBox} data-label="CaseOrigin"></lightning-combobox>
+                            <lightning-combobox label="Case Origin" options={originOptions} value={selectedValues.CaseOrigin} onchange={handleSelectedValueComboBox} data-label="CaseOrigin"></lightning-combobox>
                         </div>
                         <div class="slds-size_1-of-3 slds-var-p-around_x-small">
-                            <lightning-combobox label="Status" options={statusOptions} value={selectedValue} onchange={handleSelectedValueComboBox} data-label="Status"></lightning-combobox>
+                            <lightning-combobox label="Status" options={statusOptions} value={selectedValues.Status} onchange={handleSelectedValueComboBox} data-label="Status"></lightning-combobox>
                         </div>
                         <div class="slds-size_1-of-3 slds-var-p-around_x-small">
-                            <lightning-combobox label="Reason" options={reasonOptions} value={selectedValue} onchange={handleSelectedValueComboBox} data-label="Reason"></lightning-combobox>
+                            <lightning-combobox label="Reason" options={reasonOptions} value={selectedValues.Reason} onchange={handleSelectedValueComboBox} data-label="Reason"></lightning-combobox>
                         </div>
                         <div class="slds-size_1-of-3 slds-var-p-around_x-small">
-                            <lightning-combobox label="Priority" options={priorityOptions} value={selectedValue} onchange={handleSelectedValueComboBox} data-label="Priority"></lightning-combobox>
+                            <lightning-combobox label="Priority" options={priorityOptions} value={selectedValues.Priority} onchange={handleSelectedValueComboBox} data-label="Priority"></lightning-combobox>
+                        </div>
+                        <div class="slds-size_1-of-3 slds-var-p-around_x-small">
+                            <lightning-combobox label="Type" options={typeOptions} value={selectedValues.Type} onchange={handleSelectedValueComboBox} data-label="Type"></lightning-combobox>
                         </div>
                     </div>
+                    <!-- Adding product related Maintenance Tickets -->
+                     <div>
+                            <template for:each={fields} for:item="field" for:index="index">
+                                <div key={field.id} class="slds-grid slds-wrap">
+                                    <div class="slds-size_1-of-3 slds-var-p-around_x-small">
+                                        <lightning-input type="text" value={field.productDescription} label="Equipment Details" data-index={index} onchange={handleTextChange}></lightning-input>
+                                    </div>
+                                    <div class="slds-size_1-of-3 slds-var-p-around_x-small">
+                                        <lightning-combobox
+                                            label="Select Part"
+                                            placeholder="Select Part"
+                                            value={field.productID}
+                                            options={ProductOptions}
+                                            data-index={index}
+                                            onchange={handleDropdownChange}>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-size_1-of-3 slds-var-p-around_x-large">
+                                        <lightning-button-icon icon-name="utility:delete" alternative-text="Delete" title="Delete" size="small" data-index={index} onclick={removeField}></lightning-button-icon>
+                                    </div>
+                                </div>
+                            </template>
+                        
+
+                            <!-- + Add Button -->
+                        <div class="slds-grid slds-var-p-around_x-small">
+                            <lightning-button
+                                variant="neutral"
+                                label="Add Equipment"
+                                icon-name="utility:add"
+                                onclick={addField}>
+                            </lightning-button>
+                        </div>
+
+
+                </div>
                     <footer class="slds-modal__footer slds-grid slds-grid_align-center" style="background-color: transparent; border: none; box-shadow: none; display: flex; justify-content: center;">
                         <lightning-button variant="neutral" label="Cancel" onclick={closeModal} class="slds-var-m-right_small"></lightning-button>
                         <lightning-button variant="brand" label="Save" onclick={handleSave}></lightning-button>
