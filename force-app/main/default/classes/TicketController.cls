@@ -33,7 +33,7 @@ public with sharing class TicketController {
      */
     @AuraEnabled(cacheable=true)
     public static Map<String,List<String>> productDetailsForCaseID(List<String> caseIds) {
-        List<Equipment_Maintenance_Item__c> itemList = [SELECT Maintenance_Request__r.Id, Equipment__r.Name, Equipment__r.Current_Inventory__c FROM 
+        List<Equipment_Maintenance_Item__c> itemList = [SELECT Maintenance_Request__r.Id, Equipment__r.Name, Quantity__c FROM 
         Equipment_Maintenance_Item__c WHERE Maintenance_Request__r.Id IN :caseIds];
         Map<String,List<String>> productDetails = new Map<String,List<String>>();
         for(Equipment_Maintenance_Item__c item : itemList) {
@@ -42,7 +42,7 @@ public with sharing class TicketController {
             }
             productDetails.get(item.Maintenance_Request__r.Id).add(item.Equipment__r.Name);
             productDetails.get(item.Maintenance_Request__r.Id).add(
-                String.valueOf(item.Equipment__r.Current_Inventory__c != null ? item.Equipment__r.Current_Inventory__c : 0)
+                String.valueOf(item.Quantity__c != null ? item.Quantity__c : 0)
             );
         }
         return productDetails;

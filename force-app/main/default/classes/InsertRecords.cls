@@ -75,6 +75,7 @@ public with sharing class InsertRecords {
                 Equipment_Maintenance_Item__c emi = new Equipment_Maintenance_Item__c();
                 emi.Maintenance_Request__c = caseRecord.Id;
                 emi.Equipment__c = (String) productIDName.get('productID');
+                emi.Quantity__c = 1;
                 lookupToMapCaseAndProductList.add(emi);
             }
         }
