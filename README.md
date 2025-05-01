@@ -1,53 +1,74 @@
-# 🚐 HowWeRoll - Apex Specialist Superbadge Project
+# 🚐 Apex Specialist Superbadge Project
 
 ![Project Banner](image/image.png)
 
-This project is built as a solution to the **Salesforce Apex Specialist Superbadge**, showcasing advanced Apex development skills and Salesforce platform automation.
+This project is built as a solution to the **Salesforce Apex Specialist Superbadge**, showcasing advanced Apex development skills, integration, and automation techniques.
 
 ---
 
-## 🧩 Use Case
+## 📖 Use Case
 
-**HowWeRoll Rentals**, the world’s largest RV rental company, is scaling rapidly across the globe. With a massive fleet of recreational vehicles (RVs), the company offers top-tier rental and roadside assistance services.
+**HowWeRoll Rentals**, the world’s largest RV rental company, offers top-tier RV rental and roadside assistance services. With their fleet growing exponentially, they need scalable solutions to manage routine and emergency maintenance for vehicles.
 
-However, with growth comes complexity—especially in maintaining RVs. Routine service checks and emergency repairs are critical to ensuring customer safety and preventing costly breakdowns.
+As the **Salesforce Developer**, your task is to:
 
-You’ve been hired as the **Lead Salesforce Developer** to build a scalable, automated service maintenance system that:
-- Flags vehicles needing routine maintenance or repair
-- Allows support staff to view and manage service cases
-- Syncs Salesforce with a separate inventory management system
+- Automate service workflows
+- Flag unsafe or unmaintained vehicles
+- Sync Salesforce with a back-office inventory system
+- Help the RV repair team manage and prioritize cases efficiently
 
 ---
 
-## 🛠️ Project Features
+## 🧩 Task required to Earn This Superbadge
 
-This solution primarily leverages **Apex**, but to enhance user experience and demonstrate a modern UI, a **Lightning Web Component (LWC)** has been developed with the following features:
+✔️ Automate record creation using Apex triggers  
+✔️ Synchronize Salesforce data with an external system using asynchronous REST callouts  
+✔️ Schedule synchronization using Apex code  
+✔️ Test automation logic to confirm Apex trigger side effects  
+✔️ Test integration logic using callout mocks  
+✔️ Test scheduling logic to confirm actions get queued
 
-### ✅ Key Functionalities
+---
 
-- **Drag-and-Drop Case Management**:  
-  View and manage cases visually by dragging case cards across status columns to update their state.
+## 🧪 Concepts Tested in This Superbadge
 
-- **Hover Details for Cases**:  
-  Hovering over a case card reveals associated product details in a dynamic tooltip.
+- **Apex Triggers**
+- **Asynchronous Apex** (`@future`, `Queueable`)
+- **Apex Integration** (`HttpCallout`, `Named Credentials`)
+- **Apex Testing** (Mocks, DML side effects, coverage)
+- **Apex Scheduler**
 
-- **Status Summary Table**:  
-  Displays real-time counts of cases grouped by each status category.
+---
 
-- **Create New Case Form**:  
-  Allows users to create a new maintenance case and associate multiple products to it.
+## 🖥️ LWC component (not a part of Super Badge but added to developed UI along with backend functionality)
+
+To complement the Apex automation, an **LWC dashboard** was implemented to enhance user experience with the following features:
+
+### 🔹 Drag-and-Drop Case Management
+Easily update the status of cases using a visual drag-and-drop interface.
+
+### 🔹 Hover-to-View Product Details
+Hovering over a case card reveals associated product(s) in a quick tooltip.
+
+### 🔹 Case Status Summary Table
+Displays a live count of cases grouped by status for fast insights.
+
+### 🔹 Case Creation Form
+Create new maintenance requests and associate multiple products through a guided form.
 
 ![Case Creation Form](image/CaseCreationForm.png)
 
 ---
 
-## 🧪 Technologies Used
+## 🧰 Technologies Used
 
-- **Apex Classes & Triggers**
-- **Lightning Web Components (LWC)**
-- **Lightning Data Service**
-- **SOQL and DML**
-- **Custom Metadata & Custom Objects**
-- **Git & Version Control**
+- Apex Classes, Triggers, and Test Classes
+- Queueable & Future Apex
+- Named Credentials & HttpCallouts
+- Lightning Web Components (LWC)
+- SOQL & DML Operations
+- Custom Metadata Types
+- Git for Version Control
 
 ---
+
