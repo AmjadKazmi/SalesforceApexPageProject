@@ -44,7 +44,6 @@ export default class SearchableCombox extends LightningElement {
 
     handleInputChange(event) {
         this.searchKey = event.target.value;
-        console.log('search Key from HandleInputChange:', this.searchKey);
         this.fetchData(this.label, this.searchKey);
         this.showDropdown = true;
     }
@@ -77,9 +76,6 @@ export default class SearchableCombox extends LightningElement {
                         .catch(error => console.error('Error searching vehicles:', error));
                     break;
                 case 'Contact':
-                            console.log('Search Key:', searchText);
-                    console.log('Label:', this.label);
-                    console.log('Contact options:', this.options);
                     searchByObjectLabel({ objectLabel: 'Contact', searchKey: searchText })
                         .then(result => {
                             this.options = result;
@@ -95,12 +91,9 @@ export default class SearchableCombox extends LightningElement {
        
 
     handleSelect(event) { 
-        console.log('Select event triggered');
         const selectedID= event.currentTarget.dataset.value;
-        console.log('Selected value:', selectedID);
         const selectedValue = this.options.find(opt => opt.value === selectedID)?.label;
         this.searchKey = selectedValue;
-        console.log('Selected value:', selectedValue);
         this.showDropdown = false;
 
         const selectEvent = new CustomEvent('selected', { detail: { label:this.label, ID:selectedID } });

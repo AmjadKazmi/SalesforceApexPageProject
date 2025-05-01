@@ -17,10 +17,6 @@ export default class ProductDetailsHover extends LightningElement {
         this.productData = this.__casedata;
     }
 
-    connectedCallback() {
-        console.log('Received Case ID:', this.caseId);
-        // You can use this ID to fetch additional details if needed
-    }
 
     handleMouseEnter(event) {
         this.productDetailForCaseId = this.caseData[this.caseId];

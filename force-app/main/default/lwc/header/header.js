@@ -2,6 +2,8 @@ import { LightningElement, wire } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
 import getCaseCount from '@salesforce/apex/TicketController.getCaseCount';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { MessageContext, subscribe } from 'lightning/messageService';
+import CASE_CREATED_CHANNEL from '@salesforce/messageChannel/CaseCreatedChannel__c';
 
 export default class CaseCountTable extends LightningElement {
     wiredCaseData //to store the data for refreshApex
@@ -32,6 +34,23 @@ export default class CaseCountTable extends LightningElement {
             } 
         }
     ];
+
+    @wire(MessageContext) messageContext;
+        
+        connectedCallback() {
+            this.subscribeToMessageChannel();
+        }
+        subscribeToMessageChannel() {
+            subscribe(this.messageContext, CASE_CREATED_CHANNEL, (message) => {
+                this.handleMessage(message);
+            });
+        }
+        handleMessage(message) {
+            if (message) {
+                refreshApex(this.wiredCaseData);
+            }
+        }
+    
     
     /**
      * to get the case count from the server side controller and display it in the table
@@ -40,7 +59,6 @@ export default class CaseCountTable extends LightningElement {
      * @date: 2025-03-04     */
     @wire(getCaseCount)
     wiredCaseCount(result) {
-        console.log('wireCaseCount is called');
         this.wiredCaseData = result;
         const { error, data } = result;
         if (data) {
@@ -72,19 +90,15 @@ export default class CaseCountTable extends LightningElement {
     // Handle case update event
      handleCaseUpdate(event) {
         if (event.detail.updated) {
-            console.log('Data updated, refreshing component...');
             refreshApex(this.wiredCaseData);  // Refresh data from Apex
         }
      }
     
     handleCreateNewRequest() {
-        console.log('Create New Request button clicked');
         this.isModalVisible = true;
-        console.log('Modal Visible set in header:', this.isModalVisible);
     }
     handleCloseModal() {
         this.isModalVisible = false;
-        console.log('Modal Visible set in header:', this.isModalVisible);
          document.body.style.overflow = '';
     }
 }

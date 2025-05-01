@@ -58,7 +58,6 @@ export default class NewRequestComponent extends LightningElement {
     @wire(GETPRODUCTS)
     wireProducts({ error, data }) {
         if (data) {
-            console.log('Products New Request Component:', JSON.stringify(data));
             this.ProductOptions = data.map(item => ({
                 label: item.Name,
                 value: item.Id
@@ -66,7 +65,6 @@ export default class NewRequestComponent extends LightningElement {
         } else if (error) {
             console.error('Error loading products:', JSON.stringify(error));
         }
-        console.log('Product Options in New Request Component:', JSON.stringify(this.ProductOptions));
     }
     
     /**
@@ -152,14 +150,11 @@ export default class NewRequestComponent extends LightningElement {
 
 
     handleSave() {
-        console.log('Selected values after Save:', JSON.stringify(this.selectedValues));
-        console.log('Fields:', JSON.stringify(this.fields));
         const selectedValues = {
             ...this.selectedValues,
             fields: this.fields
         };
         this.dispatchEvent(new CustomEvent('closemodal'));
-        console.log('Selected values after Save:', JSON.stringify(selectedValues));
         INSERTRECORD({ caseDataJson: JSON.stringify(selectedValues) })
             .then(result => {
                 if (result && result.CaseNumber) {
@@ -170,19 +165,13 @@ export default class NewRequestComponent extends LightningElement {
                             variant: 'success'
                         })
                     );
-                    console.log('Case created successfully:', JSON.stringify(result));
                     // Reset form values after successful save
-                    removedSelectedValue();
+                    this.removedSelectedValue();
                     // Publish message to notify other components
-                    console.log('Result:', JSON.stringify(result));
-                    console.log(this.messageContext);
-                    console.log('Message context:', JSON.stringify(this.messageContext));
                     const payload = {       
                         caseId: result.Id
                     };
-                    console.log('Payload:', JSON.stringify(payload));
                     publish(this.messageContext, CASE_CREATED_CHANNEL, payload);
-                    console.log('Message published:', JSON.stringify(payload));
                 } else {
                     this.dispatchEvent(
                         new ShowToastEvent({
@@ -191,7 +180,7 @@ export default class NewRequestComponent extends LightningElement {
                             variant: 'error'
                         })
                     );
-                    removedSelectedValue();
+                    this.removedSelectedValue();
                 }
             })
             .catch(error => {
@@ -202,7 +191,7 @@ export default class NewRequestComponent extends LightningElement {
                         variant: 'error'
                     })
                 );
-                removedSelectedValue();
+                this.removedSelectedValue();
                 console.error('Error inserting record:', error);
             });
     }
@@ -236,7 +225,7 @@ export default class NewRequestComponent extends LightningElement {
 
     handleDropdownChange(event) {
         const index = event.target.dataset.index;
-        this.fields[index].selected = event.target.value;
+        this.fields[index].productID = event.target.value;
     }
 
     removeField(event) {

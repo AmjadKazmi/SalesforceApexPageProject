@@ -32,7 +32,6 @@ export default class RequestTracker extends NavigationMixin(LightningElement) {
         });
     }
     handleMessage(message) {
-        console.log('Message received in tracker:', JSON.stringify(message));
         if (message) {
             refreshApex(this.wiredCasesResult);
         }
@@ -58,7 +57,6 @@ export default class RequestTracker extends NavigationMixin(LightningElement) {
     wiredProductDetails({ error, data }) {
             if (data) {
                 this.productDetailsData = this.tranformProductDetailsData(data);
-                console.log('Product Details from wire in tracker:', JSON.stringify(this.productDetailsData));
             } else if(error) {
                 console.error('error', error);
             }
@@ -71,7 +69,6 @@ export default class RequestTracker extends NavigationMixin(LightningElement) {
      */
 
     tranformProductDetailsData(data) {
-        console.log('Data in function' + JSON.stringify(data));
         return Object.keys(data).reduce((acc, id) => {
             const products = data[id];
             acc[id] = {};
