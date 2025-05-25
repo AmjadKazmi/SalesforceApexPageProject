@@ -68,6 +68,12 @@ public with sharing class InsertRecords {
 
         insert caseRecord;
 
+
+        /**
+         * This is a junction object between Case and Product2
+         * It is used to create a many-to-many relationship between Case and Product2
+         * The Equipment_Maintenance_Item__c object has a lookup field to Case and a lookup field to Product2
+         */
         List<Equipment_Maintenance_Item__c> lookupToMapCaseAndProductList = new List<Equipment_Maintenance_Item__c>();
 
         for (Map<String, Object> productIDName : PRODUCTS_ID_NAME) {
